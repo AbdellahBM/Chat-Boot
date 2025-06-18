@@ -1,0 +1,41 @@
+<!-- Icône flottante -->
+<div class="chatbot-icon" 
+     (click)="toggleChat()" 
+     role="button" 
+     tabindex="0"
+     aria-label="Open chatbot">💬</div>
+
+<!-- Boîte de chat -->
+<div class="chatbox" *ngIf="showChat" role="dialog" aria-label="Chatbot conversation">
+  <div class="chat-header">
+    <strong>🤖 Chatbot</strong>
+    <button class="close-btn" 
+            (click)="toggleChat()" 
+            aria-label="Close chatbot">×</button>
+  </div>
+
+  <div class="chat-messages" role="log" aria-live="polite">
+    <div *ngFor="let msg of messages" 
+         [ngClass]="msg.from"
+         [attr.aria-label]="msg.from === 'user' ? 'Your message' : 'Bot response'">
+      {{ msg.text }}
+    </div>
+    <div *ngIf="isLoading" class="loading-indicator">
+      🤖 Typing...
+    </div>
+  </div>
+
+  <div class="input-container">
+    <input [(ngModel)]="userInput"
+           (keydown.enter)="sendMessage()"
+           [disabled]="isLoading"
+           placeholder="Écris ici..."
+           aria-label="Type your message"
+           autocomplete="off" />
+    <button (click)="sendMessage()" 
+            [disabled]="!userInput.trim() || isLoading"
+            aria-label="Send message">
+      📤
+    </button>
+  </div>
+</div>
